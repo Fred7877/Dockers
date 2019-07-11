@@ -1,0 +1,10 @@
+127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::0	ip6-localnet
+ff00::0	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+172.28.0.3	9e68b1559657
+172.23.0.2	9e68b1559657
+
+172.0.0.1  codeigniter-test.local

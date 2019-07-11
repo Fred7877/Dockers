@@ -1,0 +1,45 @@
+version: '2'
+services:
+  enginejlrfull:
+    restart: always
+    build: ./docker/engine/
+    volumes:
+      - ../../:/var/www/html/:rw
+      - "engine:/var/lib/postgresql:rw"
+      - ./docker/engine/pg_hba.conf:/etc/postgresql/9.4/main/pg_hba.conf:ro
+      - ./docker/engine/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - ./docker/engine/config.inc.php:/usr/share/phppgadmin/conf/config.inc.php:ro
+      - ./docker/engine/phppgadmin.conf:/etc/apache2/conf-available/phppgadmin.conf:ro
+      - ./docker/engine/vhost.conf:/etc/apache2/sites-available/000-default.conf:ro
+      - ./docker/engine/phppgadminphp7/ArrayRecordSet.php:/usr/share/phppgadmin/classes/ArrayRecordSet.php:ro
+      - ./docker/engine/phppgadminphp7/Misc.php:/usr/share/phppgadmin/classes/Misc.php:ro
+      - ./docker/engine/phppgadminphp7/class.select.php:/usr/share/phppgadmin/classes/class.select.php:ro
+      - ./docker/engine/phppgadminphp7/PluginManager.php:/usr/share/phppgadmin/classes/PluginManager.php:ro
+      - ./docker/engine/phppgadminphp7/ADODB_base.php:/usr/share/phppgadmin/classes/database/ADODB_base.php:ro
+      - ./docker/engine/phppgadminphp7/Connection.php:/usr/share/phppgadmin/classes/database/Connection.php:ro
+      - ./docker/engine/phppgadminphp7/Postgres.php:/usr/share/phppgadmin/classes/database/Postgres.php:ro
+      - ./docker/engine/phppgadminphp7/Postgres93.php:/usr/share/phppgadmin/classes/database/Postgres93.php:ro
+      - ./docker/engine/phppgadminphp7/adodb.inc.php:/usr/share/phppgadmin/libraries/adodb/adodb.inc.php:ro
+      - ./docker/engine/phppgadminphp7/adodb-postgres64.inc.php:/usr/share/phppgadmin/libraries/adodb/drivers/adodb-postgres64.inc.php:ro
+      - ./docker/engine/phppgadminphp7/adodb-postgres7.inc.php:/usr/share/phppgadmin/libraries/adodb/drivers/adodb-postgres7.inc.php:ro
+      - ./docker/engine/phppgadminphp7/decorator.inc.php:/usr/share/phppgadmin/libraries/decorator.inc.php:ro
+    working_dir: /var/www/html
+    environment:
+      - "POSTGRES_HOST=localhost"
+      - "POSTGRES_PORT=5432"
+      - "POSTGRES_DEFAULTDB=jlr"
+    networks:
+      - default
+      - landroverinfoconcession_jlr_network
+    dns_search:
+      - enginejlrfull
+    ports:
+      - "82:80"
+      - "86:80"
+      - "5433:5432"
+    dns: 8.8.8.8
+networks:
+  landroverinfoconcession_jlr_network:
+    external: true
+volumes:
+  engine: {}

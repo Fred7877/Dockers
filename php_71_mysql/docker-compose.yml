@@ -1,0 +1,35 @@
+version: '3'
+services:
+  php71mysqlengine:
+    restart: always
+    build: ./docker/engine/
+    volumes:
+      - ../../:/var/www/html/:rw
+      - ./docker/engine/vhost.conf:/etc/apache2/sites-available/000-default.conf:ro
+      - ./docker/engine/hosts:/etc/hosts:ro
+    networks:
+      - default
+    dns_search:
+      - php71mysqlengine
+    ports:
+      - "84:80"
+    tty: true
+    dns: 8.8.8.8
+    links:
+      - mysqldb:mysql
+    working_dir: '/var/www/html/'
+  mysqldb:
+    image: mysql:5.6
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: mysqldb
+      MYSQL_PASSWORD: mysqldb
+    volumes:
+      - /var/lib/mysql56-data:/var/lib/mysql
+volumes:
+  db-data:
+    driver: local
